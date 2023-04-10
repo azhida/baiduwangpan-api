@@ -1,0 +1,17 @@
+{
+    "name": "azhida\/baiduwangpan-api",
+    "description": "百度网盘API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "azhida",
+            "email": "334064034@qq.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Azhida\\BaiduwangpanApi\\": "src"
+        }
+    }
+}
