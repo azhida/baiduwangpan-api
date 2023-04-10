@@ -178,7 +178,9 @@ class BdPan
             'client_secret' => $this->Secretkey,
             'redirect_uri' => $this->RedirectUri,
         ];
-        $token = $this->request($url, 'get', $query);
+        $url .= '?' . http_build_query($query);
+        $token = $this->httpGet($url);
+        $token = json_decode($token, true);
         $token['expires_time'] = time() + $token['expires_in'];
 
         $f = fopen($this->getTokenFile(), 'w');
@@ -206,7 +208,9 @@ class BdPan
             'client_id' => $this->Appkey,
             'client_secret' => $this->Secretkey,
         ];
-        $token = $this->request($url, 'get', $query);
+        $url .= '?' . http_build_query($query);
+        $token = $this->httpGet($url);
+        $token = json_decode($token, true);
         $token['expires_time'] = time() + $token['expires_in'];
 
         $f = fopen($this->getTokenFile(), 'w');
@@ -222,16 +226,31 @@ class BdPan
         return dirname(__FILE__) . '/token.json';
     }
 
-    public function request($url, $type = 'GET', $query = [], $json = [], $headers = [])
+    // todo 后续封装优化
+    // public function request($url, $type = 'GET', $query = [], $json = [], $headers = [])
+    // {
+    //     $params = [];
+    //     if (!empty($query)) $params['query'] = $query;
+    //     if (!empty($json)) $params['data'] = $json;
+    //     if (!empty($headers)) $params['headers'] = $headers;
+    //     $client = new \GuzzleHttp\Client();
+    //     $response = $client->request($type, $url, $params)->getBody()->getContents();
+    //     return json_decode($response, true) ?? null;
+    // }
+
+    public function httpGet($url)
     {
-        $params = [];
-        if (!empty($query)) $params['query'] = $query;
-        if (!empty($json)) $params['data'] = $json;
-        if (!empty($headers)) $params['headers'] = $headers;
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request($type, $url, $params)->getBody()->getContents();
-        return json_decode($response, true) ?? null;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 500);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $res = curl_exec($curl);
+        curl_close($curl);
+        return $res;
     }
+
 
     public function curlPost($url, $data = array())
     {
