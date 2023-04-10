@@ -18,7 +18,7 @@ $bdPan = new \Azhida\BaiduwangpanApi\BdPan($AppID = '', $Appkey = '', $Secretkey
 $bdPan->authorize();
 
 // 上传文件
-$bdPan->upload(public_path('111.zip'), '/apps/111.zip');
+$bdPan->upload('./111.zip', '/apps/111.zip');
 ```
 
 ## Contributing
