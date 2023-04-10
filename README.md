@@ -11,7 +11,15 @@ $ composer require azhida/baiduwangpan-api -vvv
 
 ## Usage
 
-TODO
+```php
+$bdPan = new \Azhida\BaiduwangpanApi\BdPan($AppID = '', $Appkey = '', $Secretkey = '', $RedirectUri = 'http://localhost/bd_pan/get_code', $rtype = 1);
+
+// 授权
+$bdPan->authorize();
+
+// 上传文件
+$bdPan->upload(public_path('111.zip'), '/apps/111.zip');
+```
 
 ## Contributing
 
