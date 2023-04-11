@@ -279,10 +279,15 @@ class BdPan
         $block_list = [];
         $files = []; // 切割后的文件集
 
+        $path = dirname($source_file) . '/temp_files/';
+        if (!file_exists($path)) {
+            mkdir($path, 0777);
+        }
+
         $i  = 0; // 分割的块编号
         $fp  = fopen($source_file, "rb");      //要分割的文件
         while(!feof($fp)){
-            $file_name = dirname($source_file) . '/temp_files/' . basename($source_file) . '.' . $i;
+            $file_name = $path . basename($source_file) . '.' . $i;
             $handle = fopen($file_name,"wb");
             $content = fread($fp,$single_size);
             fwrite($handle, $content);
