@@ -4,21 +4,23 @@ namespace Azhida\BaiduwangpanApi;
 
 class BdPan
 {
+    protected $config = [];
     protected $AppID = '';
     protected $Appkey = '';
     protected $Secretkey = '';
     protected $RedirectUri = 'oob'; // 回调地址：如 http://localhost/baidu_api/get_code.php , 默认 oob
     protected $rtype = 1; // 文件命名策略：1 表示当path冲突时，进行重命名；2 表示当path冲突且block_list不同时，进行重命名；3 当云端存在同名文件时，对该文件进行覆盖
 
-    public function __construct($AppID = '', $Appkey = '', $Secretkey = '', $RedirectUri = '', $rtype = 1)
+    public function __construct($config = [])
     {
-       $this->AppID = $AppID;
-       $this->Appkey = $Appkey;
-       $this->Secretkey = $Secretkey;
-       $this->RedirectUri = $RedirectUri;
-       $this->rtype = $rtype;
+        $this->config = $config;
+        $this->AppID = $config['AppID'];
+        $this->Appkey = $config['Appkey'];
+        $this->Secretkey = $config['Secretkey'];
+        $this->RedirectUri = $config['RedirectUri'];
+        $this->rtype = $config['rtype'];
 
-        // 参数异常处理 todo
+        // 参数异常校验 todo
     }
 
     public function authorize()
