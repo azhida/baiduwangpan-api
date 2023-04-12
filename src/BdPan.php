@@ -10,6 +10,7 @@ class BdPan
     protected $Secretkey = '';
     protected $RedirectUri = 'oob'; // 回调地址：如 http://localhost/baidu_api/get_code.php , 默认 oob
     protected $rtype = 1; // 文件命名策略：1 表示当path冲突时，进行重命名；2 表示当path冲突且block_list不同时，进行重命名；3 当云端存在同名文件时，对该文件进行覆盖
+    protected $FileFragmentSize = 4; // 分片上传的单个文件片段大小，单位 M，默认 4M
 
     public function __construct($config = [])
     {
@@ -18,7 +19,12 @@ class BdPan
         $this->Appkey = $config['Appkey'];
         $this->Secretkey = $config['Secretkey'];
         $this->RedirectUri = $config['RedirectUri'];
-        $this->rtype = $config['rtype'];
+        if (isset($config['rtype'])) {
+            $this->rtype = $config['rtype'];
+        }
+        if (isset($config['FileFragmentSize'])) {
+            $this->FileFragmentSize = $config['FileFragmentSize'];
+        }
 
         // 参数异常校验 todo
     }
@@ -47,7 +53,7 @@ class BdPan
      */
     public function upload($source_file, $file_name)
     {
-        $cutFileRes = $this->cutFile($source_file);
+        $cutFileRes = $this->cutFile($source_file, $this->FileFragmentSize);
         $block_list = $cutFileRes['block_list'];
         $cut_files = $cutFileRes['files'];
 

@@ -18,6 +18,7 @@ $config = [
     'Secretkey' => '',
     'RedirectUri' => 'http://localhost/bd_pan/get_code',
     'rtype' => 1,
+    'FileFragmentSize' => 4, // 分片上传的单个文件片段大小，单位 M，默认：4M
 ];
 $bdPan = new \Azhida\BaiduwangpanApi\BdPan($config);
 
