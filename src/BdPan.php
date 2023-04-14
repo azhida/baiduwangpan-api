@@ -127,6 +127,8 @@ class BdPan
             $res[] = $this->curlPost($url, $post_data);
         }
 
+        $this->delFileFragments($cut_files);
+
         return $res;
     }
 
@@ -311,5 +313,13 @@ class BdPan
             'block_list' => json_encode($block_list),
             'files' => $files,
         ];
+    }
+
+    // 删除文件片段
+    public function delFileFragments($files = [])
+    {
+        foreach($files as $file) {
+            unlink($file);
+        }
     }
 }
